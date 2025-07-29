@@ -14,8 +14,9 @@ class UsecaseProviders {
   static late final UpdateTaskUsecase updateTaskUsecase;
 
   static Future<void> init() async {
+    DataSourceRepositoryImpl dataSourceRepository = DataSourceRepositoryImpl();
     TaskRepositoryImpl taskRepository = TaskRepositoryImpl(
-      datasourceRepository: DataSourceRepositoryImpl(),
+      datasourceRepository: dataSourceRepository,
     );
     addTaskUsecase = AddTaskUsecase(taskRepository: taskRepository);
     deleteTaskUsecase = DeleteTaskUsecase(taskRepository: taskRepository);
