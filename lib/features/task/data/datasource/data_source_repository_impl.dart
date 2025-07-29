@@ -1,15 +1,10 @@
 import 'package:todoo/features/task/data/models/task.dart';
 import 'package:todoo/features/task/data/repositories/datasource_repository.dart';
 
+typedef FakeSQLTable = List<Map<String, dynamic>>;
+
 class DataSourceRepositoryImpl extends DatasourceRepository {
-  List<Map<String, dynamic>> taskMap = List.generate(10, (index) {
-    return {
-      "id": index,
-      "task": "Task - $index",
-      "content": "Content - $index",
-      "isDone": false,
-    };
-  });
+  FakeSQLTable taskMap = _taskTable(row: 10);
   @override
   Future<void> addTask(Task task) async {
     taskMap.add(task.toMap());
@@ -43,4 +38,15 @@ class DataSourceRepositoryImpl extends DatasourceRepository {
   int _getIndex(Task task) {
     return taskMap.indexWhere((element) => element["id"] == task.id);
   }
+}
+
+FakeSQLTable _taskTable({required int row}) {
+  return List.generate(row, (index) {
+    return {
+      "id": index,
+      "task": "Task - $index",
+      "content": "Content - $index",
+      "isDone": false,
+    };
+  });
 }
