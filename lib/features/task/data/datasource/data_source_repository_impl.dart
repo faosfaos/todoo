@@ -1,5 +1,6 @@
 import 'package:todoo/features/task/data/models/task.dart';
 import 'package:todoo/features/task/data/repositories/datasource_repository.dart';
+import 'package:todoo/features/task/domain/entities/entity.dart';
 
 class DataSourceRepositoryImpl extends DatasourceRepository {
   List<Map<String, dynamic>> taskMap = List.generate(10, (index) {
@@ -11,13 +12,13 @@ class DataSourceRepositoryImpl extends DatasourceRepository {
     };
   });
   @override
-  Future<void> addTask(Task entity) async {
-    taskMap.add(entity.toMap());
+  Future<void> addTask(Task task) async {
+    taskMap.add(task.toMap());
   }
 
   @override
-  Future<void> deleteTask(Task entity) async {
-    final index = taskMap.indexWhere((element) => element["id"] == entity.id);
+  Future<void> deleteTask(Task task) async {
+    final index = _getIndex(task);
     taskMap.removeAt(index);
   }
 
@@ -28,15 +29,19 @@ class DataSourceRepositoryImpl extends DatasourceRepository {
   }
 
   @override
-  Future<void> toggleTask(Task entity) async {
-    final index = taskMap.indexWhere((element) => element["id"] == entity.id);
-    taskMap[index]["isDone"] = !entity.isDone;
+  Future<void> toggleTask(Task task) async {
+    final index = _getIndex(task);
+    taskMap[index]["isDone"] = !task.isDone;
   }
 
   @override
-  Future<void> updateTask(Task entity) async {
-    final index = taskMap.indexWhere((element) => element["id"] == entity.id);
-    taskMap[index]["task"] = entity.task;
-    taskMap[index]["content"] = entity.content;
+  Future<void> updateTask(Task task) async {
+    final index = _getIndex(task);
+    taskMap[index]["task"] = task.task;
+    taskMap[index]["content"] = task.content;
+  }
+
+  int _getIndex(Task task) {
+    return taskMap.indexWhere((element) => element["id"] == task.id);
   }
 }
