@@ -6,7 +6,7 @@ import 'package:todoo/features/task/domain/usecases/fetch_tasks_usecase.dart';
 import 'package:todoo/features/task/domain/usecases/toggle_task_usecase.dart';
 import 'package:todoo/features/task/domain/usecases/update_task_usecase.dart';
 
-class UsecaseProviders {
+abstract class UsecaseProviders {
   static late final AddTaskUsecase addTaskUsecase;
   static late final DeleteTaskUsecase deleteTaskUsecase;
   static late final FetchTasksUsecase fetchTasksUsecase;
