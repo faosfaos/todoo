@@ -20,6 +20,8 @@ class TaskView extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     return BlocBuilder<TaskBloc, TaskState>(
+      //! iki state durumuna bakar..
+      //! listenin uzunluklari ayni ise guncellemez
       buildWhen: (previous, current) {
         if (previous is StateLoadedTask && current is StateLoadedTask) {
           return previous.entityList.length != current.entityList.length;
