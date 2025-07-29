@@ -43,8 +43,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   ) async {
     emit(StateLoadingTask());
     try {
-      List<Entity> entityList = await _fetchTasksUsecase();
-      emit(StateLoadedTask(entityList: entityList));
+      await _emitSatetLoaded(emit);
     } catch (e) {
       emit(StateErrorTask(message: "Error Fetch $e"));
     }
@@ -54,11 +53,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     EventToggleTask event,
     Emitter<TaskState> emit,
   ) async {
-    //emit(StateLoadingTask());
     try {
       await _toggleTaskUsecase(event.entity);
-      List<Entity> entityList = await _fetchTasksUsecase();
-      emit(StateLoadedTask(entityList: entityList));
+      await _emitSatetLoaded(emit);
     } catch (e) {
       emit(StateErrorTask(message: "Error Toggle $e"));
     }
@@ -67,8 +64,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   FutureOr<void> _addTask(EventAddTask event, Emitter<TaskState> emit) async {
     try {
       await _addTaskUsecase(event.entity);
-      List<Entity> entityList = await _fetchTasksUsecase();
-      emit(StateLoadedTask(entityList: entityList));
+      await _emitSatetLoaded(emit);
     } catch (e) {
       emit(StateErrorTask(message: "Error Add $e"));
     }
@@ -80,8 +76,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   ) async {
     try {
       await _deleteTaskUsecase(event.entity);
-      List<Entity> entityList = await _fetchTasksUsecase();
-      emit(StateLoadedTask(entityList: entityList));
+      await _emitSatetLoaded(emit);
     } catch (e) {
       emit(StateErrorTask(message: "Error Delete $e"));
     }
@@ -93,10 +88,18 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   ) async {
     try {
       await _updateTaskUsecase(event.entity);
+      await _emitSatetLoaded(emit);
+    } catch (e) {
+      emit(StateErrorTask(message: "Error Update $e"));
+    }
+  }
+
+  Future<void> _emitSatetLoaded(Emitter<TaskState> emit) async {
+    try {
       List<Entity> entityList = await _fetchTasksUsecase();
       emit(StateLoadedTask(entityList: entityList));
     } catch (e) {
-      emit(StateErrorTask(message: "Error Update $e"));
+      emit(StateErrorTask(message: "Error Loaded $e"));
     }
   }
 }
