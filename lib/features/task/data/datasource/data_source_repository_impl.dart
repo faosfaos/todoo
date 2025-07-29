@@ -1,6 +1,5 @@
 import 'package:todoo/features/task/data/models/task.dart';
 import 'package:todoo/features/task/data/repositories/datasource_repository.dart';
-import 'package:todoo/features/task/domain/entities/entity.dart';
 
 class DataSourceRepositoryImpl extends DatasourceRepository {
   List<Map<String, dynamic>> taskMap = List.generate(10, (index) {
