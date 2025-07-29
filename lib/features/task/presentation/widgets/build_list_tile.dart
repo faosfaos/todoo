@@ -20,6 +20,7 @@ class BuildListTile extends StatelessWidget {
       child: BlocSelector<TaskBloc, TaskState, Entity?>(
         selector: (state) {
           if (state is StateLoadedTask) {
+            //!ListTile de bir degisiklik olduysa guncelle
             return state.entityList.firstWhere(
               (element) => element.id == task.id,
               orElse: () => task,
@@ -28,6 +29,7 @@ class BuildListTile extends StatelessWidget {
           return task;
         },
         builder: (context, incommingTask) {
+          //!null geldiginde
           if (incommingTask == null) return const SizedBox.shrink();
           return _buildListTile(incommingTask, context);
         },
